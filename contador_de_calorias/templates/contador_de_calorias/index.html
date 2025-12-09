@@ -2,8 +2,13 @@
     <head>
     </head>
     <body>
-        {% for a in alimento %}
-            <p>{{a.nome}}</p>
-        {% endfor %}
+        <form action="">
+            {% csrf_token %}
+            <select name="" id="">
+                {% for a in alimento %}
+                <option value="{{a.nome}}">{{a.nome}}</option>
+                {% endfor %}
+            </select>
+        </form>
     </body>
 </html>
