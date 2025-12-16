@@ -1,7 +1,11 @@
-<html>
-    <head>
-    </head>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Contador de Calorias</title>
+</head>
     <body>
+        <h1>Contador de Calorias</h1>
         <form method="POST">
             {% csrf_token %}
             <select name="alimento_consumido" id="alimento_consumido">
@@ -12,5 +16,13 @@
             </select>
             <button type="submit">Adicionar</button>
         </form>
+        {% for ar in alimentos_registrados %}
+            {{ar.alimento_ingerido.nome}} -
+            Carboidratos: {{ar.alimento_ingerido.carboidratos}}g -
+            Proteínas: {{ar.alimento_ingerido.proteinas}}g -
+            Gorduras: {{ar.alimento_ingerido.gorduras}}g -
+            Calorias: {{ar.alimento_ingerido.calorias}}kcal
+            </br>
+        {% endfor %}
     </body>
 </html>
