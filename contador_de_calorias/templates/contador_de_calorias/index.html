@@ -2,13 +2,15 @@
     <head>
     </head>
     <body>
-        <form action="">
+        <form method="POST">
             {% csrf_token %}
-            <select name="" id="">
-                {% for a in alimento %}
+            <select name="alimento_consumido" id="alimento_consumido">
+                <option value="" disabled selected>Selecione um alimento</option>
+                {% for a in alimentos %}
                 <option value="{{a.nome}}">{{a.nome}}</option>
                 {% endfor %}
             </select>
+            <button type="submit">Adicionar</button>
         </form>
     </body>
 </html>
