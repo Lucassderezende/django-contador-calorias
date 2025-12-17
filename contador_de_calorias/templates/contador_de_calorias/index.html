@@ -55,6 +55,13 @@
                             <td>{{ar.alimento_ingerido.calorias}}</td>
                         </tr>
                         {% endfor %}
+                        <tr>
+                            <td id="total"><b>Total:</b></td>
+                            <td id="totalCarboidratos"><b></b></td>
+                            <td id="totalProteinas"><b></b></td>
+                            <td id="totalGorduras"><b></b></td>
+                            <td id="totalCalorias"><b></b></td>
+                        </tr>
                 </table>
             </div>
             <div class="col-md-5 offset-1">
@@ -62,4 +69,18 @@
         </div>
     </div>
 </body>
-</html>
+<script>
+    var tabela = document.getElementById("tabela");
+    var carboidratos = 0,proteinas = 0, gorduras  = 0, calorias = 0;
+    for(var i=1;i<tabela.rows.length-1;i++){
+        carboidratos += parseFloat(tabela.rows[i].cells[1].innerHTML);
+        proteinas += parseFloat(tabela.rows[i].cells[2].innerHTML);
+        gorduras += parseFloat(tabela.rows[i].cells[3].innerHTML);
+        calorias += parseFloat(tabela.rows[i].cells[4].innerHTML);
+    }
+    document.getElementById("totalCarboidratos").innerHTML = carboidratos.toFixed(2);
+    document.getElementById("totalProteinas").innerHTML = proteinas.toFixed(2);
+    document.getElementById("totalGorduras").innerHTML = gorduras.toFixed(2);
+    document.getElementById("totalCalorias").innerHTML = calorias;
+</script>
+</html>  
