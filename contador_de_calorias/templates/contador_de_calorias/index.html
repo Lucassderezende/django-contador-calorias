@@ -1,28 +1,44 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Contador de Calorias</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
 </head>
-    <body>
-        <h1>Contador de Calorias</h1>
-        <form method="POST">
-            {% csrf_token %}
-            <select name="alimento_consumido" id="alimento_consumido">
-                <option value="" disabled selected>Selecione um alimento</option>
-                {% for a in alimentos %}
-                <option value="{{a.nome}}">{{a.nome}}</option>
-                {% endfor %}
-            </select>
-            <button type="submit">Adicionar</button>
-        </form>
-        {% for ar in alimentos_registrados %}
-            {{ar.alimento_ingerido.nome}} -
-            Carboidratos: {{ar.alimento_ingerido.carboidratos}}g -
-            Proteínas: {{ar.alimento_ingerido.proteinas}}g -
-            Gorduras: {{ar.alimento_ingerido.gorduras}}g -
-            Calorias: {{ar.alimento_ingerido.calorias}}kcal
-            </br>
-        {% endfor %}
-    </body>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h1>Contador de Calorias</h1>
+                <form method="POST">
+                    <div class="form-group row">
+                        <label class="col-md-2">
+                            <b>Selecione um alimento</b>
+                        </label>
+                        {% csrf_token %} 
+                        <select class="col-md-6 form-control" name="alimento_consumido" id="alimento_consumido">
+                            {% for a in alimentos %}
+                            <option value="{{a.nome}}">{{a.nome}}</option>
+                            {% endfor %}
+                        </select>
+                        <button class="btn btn-success" type="submit">Adicionar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    {% for ar in alimentos_registrados %}
+        {{ar.alimento_ingerido.nome}} -
+        Carboidratos: {{ar.alimento_ingerido.carboidratos}}g -
+        Proteínas: {{ar.alimento_ingerido.proteinas}}g -
+        Gorduras: {{ar.alimento_ingerido.gorduras}}g -
+        Calorias: {{ar.alimento_ingerido.calorias}}kcal
+        </br>
+    {% endfor %}
+</body>
 </html>
