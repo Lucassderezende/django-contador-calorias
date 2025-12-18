@@ -12,6 +12,17 @@
 </head>
 <body>
     <div class="container">
+        <br>
+        <h4>Meta de calorias</h4>
+        <div class="row">
+            <div class="col-md-9 offset-1">
+                <div class="progress">
+                    <div id="progresso" class="progress-bar bg-success" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"></div>
+                    </div>
+                </div>
+                <br>
+            </div>
+        </div>
         <div class="row">
             <div class="col-md-12">
                 <h1>Contador de Calorias</h1>
@@ -78,9 +89,12 @@
         gorduras += parseFloat(tabela.rows[i].cells[3].innerHTML);
         calorias += parseFloat(tabela.rows[i].cells[4].innerHTML);
     }
-    document.getElementById("totalCarboidratos").innerHTML = carboidratos.toFixed(2);
-    document.getElementById("totalProteinas").innerHTML = proteinas.toFixed(2);
-    document.getElementById("totalGorduras").innerHTML = gorduras.toFixed(2);
-    document.getElementById("totalCalorias").innerHTML = calorias;
+    document.getElementById("totalCarboidratos").innerHTML = "<b>" + carboidratos.toFixed(2) + "(g)</b>";
+    document.getElementById("totalProteinas").innerHTML = "<b>" + proteinas.toFixed(2) + "(g)</b>";
+    document.getElementById("totalGorduras").innerHTML = "<b>" + gorduras.toFixed(2) + "(g)</b>";
+    document.getElementById("totalCalorias").innerHTML = "<b>" + calorias + "(kcal)</b>";
+
+    var caloriasPorcentagem = calorias/2500 * 100;
+    document.getElementById("progresso").setAttribute("style","width:"+caloriasPorcentagem+"%");
 </script>
 </html>  
