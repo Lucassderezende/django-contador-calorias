@@ -9,9 +9,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
         crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
     <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-dark bg-primary">
+                    <span class="navbar-brand">Contador de calorias</span>
+                </nav>
+            </div>
+        </div>
         <br>
         <h4>Meta de calorias</h4>
         <div class="row">
@@ -47,8 +55,8 @@
                 <div>
                     <h4>Total Consumido Hoje:</h4>
                 </div>
-                <table id="tabela" class="table table-striped table-primary">
-                    <thead class="bg-primary"></thead>
+                <table id="tabela" class="table table-striped table-hover">
+                    <thead class="bg-primary text-white"></thead>
                         <tr>
                             <th>Itens:</th>
                             <th>Carboidratos(g)</th>
@@ -66,35 +74,92 @@
                             <td>{{ar.alimento_ingerido.calorias}}</td>
                         </tr>
                         {% endfor %}
-                        <tr>
+                        <tr class="table-active fw-bold">
                             <td id="total"><b>Total:</b></td>
-                            <td id="totalCarboidratos"><b></b></td>
-                            <td id="totalProteinas"><b></b></td>
-                            <td id="totalGorduras"><b></b></td>
-                            <td id="totalCalorias"><b></b></td>
+                            <td id="totalCarboidratos"><b>0.00g</b></td>
+                            <td id="totalProteinas"><b>0.00g</b></td>
+                            <td id="totalGorduras"><b>0.00g</b></td>
+                            <td id="totalCalorias"><b>0kcal</b></td>
                         </tr>
                 </table>
             </div>
             <div class="col-md-5 offset-1">
+                <div class="">
+                    <h4>Resumo de hoje:</h4>
+                </div>
+                <div class="col-md-9">
+                    <div>
+                        <canvas id="grafico" height="300"></canvas>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </body>
 <script>
     var tabela = document.getElementById("tabela");
-    var carboidratos = 0,proteinas = 0, gorduras  = 0, calorias = 0;
+    var carboidratos = 0;
+    var proteinas = 0;
+    var gorduras  = 0;
+    var calorias = 0;
+
     for(var i=1;i<tabela.rows.length-1;i++){
-        carboidratos += parseFloat(tabela.rows[i].cells[1].innerHTML);
-        proteinas += parseFloat(tabela.rows[i].cells[2].innerHTML);
-        gorduras += parseFloat(tabela.rows[i].cells[3].innerHTML);
-        calorias += parseFloat(tabela.rows[i].cells[4].innerHTML);
+        carboidratos += parseFloat(tabela.rows[i].cells[1].innerHTML) || 0;
+        proteinas += parseFloat(tabela.rows[i].cells[2].innerHTML) || 0;
+        gorduras += parseFloat(tabela.rows[i].cells[3].innerHTML) || 0;
+        calorias += parseFloat(tabela.rows[i].cells[4].innerHTML) || 0;
     }
+
     document.getElementById("totalCarboidratos").innerHTML = "<b>" + carboidratos.toFixed(2) + "(g)</b>";
     document.getElementById("totalProteinas").innerHTML = "<b>" + proteinas.toFixed(2) + "(g)</b>";
     document.getElementById("totalGorduras").innerHTML = "<b>" + gorduras.toFixed(2) + "(g)</b>";
     document.getElementById("totalCalorias").innerHTML = "<b>" + calorias + "(kcal)</b>";
+    
+    var caloriasPorcentagem = (calorias / 2500) * 100;
+    document.getElementById("progresso").style.width = caloriasPorcentagem + "%";
+    document.getElementById("progresso").setAttribute("aria-valuenow", caloriasPorcentagem);
 
-    var caloriasPorcentagem = calorias/2500 * 100;
-    document.getElementById("progresso").setAttribute("style","width:"+caloriasPorcentagem+"%");
+    var kcalCarb = carboidratos * 4;
+    var kcalProt = proteinas * 4;
+    var kcalGord = gorduras * 9;
+
+    var totalKcal = kcalCarb + kcalProt + kcalGord;
+    var porcCarb = totalKcal > 0 ? Math.round((kcalCarb / totalKcal) * 100) : 0;
+    var porcProt = totalKcal > 0 ? Math.round((kcalProt / totalKcal) * 100) : 0;
+    var porcGord  = totalKcal > 0 ? Math.round((kcalGord / totalKcal) * 100) : 0;
+
+    const ctx = document.getElementById('grafico').getContext('2d');
+    new Chart(ctx, {
+        type: 'pie',
+        data: {
+            labels: ['Carboidratos ' + porcCarb + '%',
+                'Proteínas ' + porcProt + '%',
+                'Gorduras ' + porcGord + '%'
+            ],
+            datasets: [{
+                data: [kcalCarb, kcalProt, kcalGord],
+                backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            plugins: {
+                legend: {
+                    position: 'top',
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            let label = context.label || '';
+                            let value = context.parsed;
+                            let porcentagem = totalKcal > 0 ? Math.round((value / totalKcal) * 100) : 0;
+                            return label + ': ' + value.toFixed(0) + 'kcal (' + porcentagem + '%)';
+                        }
+                    }
+                }
+            }
+        }
+    });
 </script>
 </html>  
