@@ -93,10 +93,10 @@
                                     {% endfor %}
                                     <tr class="table-active fw-bold">
                                         <td><b>Total:</b></td>
-                                        <td id="totalCarboidratos"><b>0.00g</b></td>
-                                        <td id="totalProteinas"><b>0.00g</b></td>
-                                        <td id="totalGorduras"><b>0.00g</b></td>
-                                        <td id="totalCalorias"><b>0kcal</b></td>
+                                        <td>{{ total_carboidratos }}g</td>
+                                        <td>{{ total_proteinas }}</td>
+                                        <td>{{ total_gorduras }}g</td>
+                                        <td>{{ total_calorias }}kcal</td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -120,69 +120,28 @@
     </div>
 </body>
 <script>
-    var tabela = document.getElementById("tabela");
-    var carboidratos = 0;
-    var proteinas = 0;
-    var gorduras  = 0;
-    var calorias = 0;
 
-    for(var i=1;i<tabela.rows.length-1;i++){
-        carboidratos += parseFloat(tabela.rows[i].cells[1].innerHTML) || 0;
-        proteinas += parseFloat(tabela.rows[i].cells[2].innerHTML) || 0;
-        gorduras += parseFloat(tabela.rows[i].cells[3].innerHTML) || 0;
-        calorias += parseFloat(tabela.rows[i].cells[4].innerHTML) || 0;
-    }
+    const data = {
 
-    document.getElementById("totalCarboidratos").innerHTML = "<b>" + carboidratos.toFixed(2) + "(g)</b>";
-    document.getElementById("totalProteinas").innerHTML = "<b>" + proteinas.toFixed(2) + "(g)</b>";
-    document.getElementById("totalGorduras").innerHTML = "<b>" + gorduras.toFixed(2) + "(g)</b>";
-    document.getElementById("totalCalorias").innerHTML = "<b>" + calorias + "(kcal)</b>";
-    
-    var caloriasPorcentagem = (calorias / 2500) * 100;
-    document.getElementById("progresso").style.width = caloriasPorcentagem + "%";
-    document.getElementById("progresso").setAttribute("aria-valuenow", caloriasPorcentagem);
-
-    var kcalCarb = carboidratos * 4;
-    var kcalProt = proteinas * 4;
-    var kcalGord = gorduras * 9;
-
-    var totalKcal = kcalCarb + kcalProt + kcalGord;
-    var porcCarb = totalKcal > 0 ? Math.round((kcalCarb / totalKcal) * 100) : 0;
-    var porcProt = totalKcal > 0 ? Math.round((kcalProt / totalKcal) * 100) : 0;
-    var porcGord  = totalKcal > 0 ? Math.round((kcalGord / totalKcal) * 100) : 0;
-
-    const ctx = document.getElementById('grafico').getContext('2d');
-    new Chart(ctx, {
-        type: 'pie',
-        data: {
-            labels: ['Carboidratos ' + porcCarb + '%',
-                'Proteínas ' + porcProt + '%',
-                'Gorduras ' + porcGord + '%'
+        labels: [
+            'Carboidratos {{ porcCarb }}%',
+            'Proteínas {{ porcProt }}%',
+            'Gorduras {{ porcGord }}%'
+        ],
+        datasets: [{
+            data: [
+                {{ kcalCarb }},
+                {{ kcalProt }},
+                {{ kcalGord }}
             ],
-            datasets: [{
-                data: [kcalCarb, kcalProt, kcalGord],
-                backgroundColor: ['#007bff', '#dc3545', '#ffc107'],
-                borderWidth: 1
-            }]
-        },
-        options: {
-            responsive: true,
-            plugins: {
-                legend: {
-                    position: 'top',
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function(context) {
-                            let label = context.label || '';
-                            let value = context.parsed;
-                            let porcentagem = totalKcal > 0 ? Math.round((value / totalKcal) * 100) : 0;
-                            return label + ': ' + value.toFixed(0) + 'kcal (' + porcentagem + '%)';
-                        }
-                    }
-                }
-            }
-        }
+            backgroundColor: ['#007bff', '#dc3545', '#ffc107']
+        }]
+    };
+
+    new Chart(document.getElementById('grafico'), {
+        type: 'pie',
+        data: data
     });
+
 </script>
 </html>  
