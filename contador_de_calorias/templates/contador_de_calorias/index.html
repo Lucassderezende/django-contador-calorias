@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <title>Contador de Calorias</title>
@@ -28,8 +29,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="progress">
-                    <div id="progresso" class="progress-bar bg-success" role="progressbar" style="width: 0%;"
-                        aria-valuenow="0" aria-valuemin="0" aria-valuemax="0"></div>
+                    <div class="progress-bar bg-success" style="width: {{ porcentagem }}%">
+                    </div>
                 </div>
             </div>
         </div>
@@ -84,7 +85,8 @@
                                         <td>{{ar.alimento_ingerido.calorias}}</td>
                                         <td>
                                             <form action="{% url 'deletar' ar.id %}" method="POST"
-                                                onsubmit="return confirm('Deseja remover este item?');" class="d-inline">
+                                                onsubmit="return confirm('Deseja remover este item?');"
+                                                class="d-inline">
                                                 {% csrf_token %}
                                                 <button class="btn btn-danger btn-sm">Remover</button>
                                             </form>
@@ -131,10 +133,10 @@
         datasets: [{
             data: [
                 {{ kcalCarb }},
-                {{ kcalProt }},
-                {{ kcalGord }}
+        {{ kcalProt }},
+        {{ kcalGord }}
             ],
-            backgroundColor: ['#007bff', '#dc3545', '#ffc107']
+    backgroundColor: ['#007bff', '#dc3545', '#ffc107']
         }]
     };
 
@@ -144,4 +146,5 @@
     });
 
 </script>
-</html>  
+
+</html>

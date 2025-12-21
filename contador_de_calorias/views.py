@@ -43,6 +43,9 @@ def index(request):
     porcProt = round((kcalProt / totalKcal) * 100, 2) if totalKcal else 0
     porcGord  = round((kcalGord / totalKcal) * 100, 2) if totalKcal else 0
 
+    meta = 2500
+    porcentagem = round((totalKcal / meta) * 100, 2) if meta else 0
+
     contexto = {
         "alimentos": alimentos,
         "alimentos_registrados": alimentos_registrados,
@@ -56,7 +59,8 @@ def index(request):
         "totalKcal": totalKcal,
         "porcCarb": porcCarb,
         "porcProt": porcProt,
-        "porcGord": porcGord
+        "porcGord": porcGord,
+        "porcentagem": porcentagem
     }
 
     return render(request, "contador_de_calorias/index.html", contexto)
