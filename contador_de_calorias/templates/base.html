@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
@@ -45,8 +46,7 @@
         </div>
     </div>
         <main class="container-fluid mt-4">
-        {% block content %}
-        {% endblock %}
+        {% block content %}{% endblock %}
     </main>
 </body>
 </html>
