@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from .models import Alimentos, AlimentoIngerido
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.contrib.auth import authenticate
+from django.contrib.auth import authenticate, logout
 from django.contrib.auth import login as login_django
 from django.contrib import messages
 from django.contrib.auth.password_validation import validate_password
@@ -143,5 +143,11 @@ def cadastro(request):
     messages.success(request, "Usuário criado com sucesso! Faça login.")
     return redirect("login")
         
-        
-        
+@login_required(login_url="login")
+def desconectar_usuario(request):
+    
+    if request.method == "POST":
+        list(messages.get_messages(request))
+        logout(request)
+        messages.success(request, "Usuário desconectado!")
+        return redirect("login")
