@@ -3,6 +3,7 @@
 {% block title %}Contador de Calorias {% endblock %}
 
 {% block content %}
+
 <body>
     <div class="container-fluid mt-3 px-4">
         <br>
@@ -13,7 +14,8 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="progress">
-                    <div class="progress-bar bg-success" style="width: {{ porcentagem }}%">
+                    <div class="progress-bar bg-success"
+                        style="width: {{ porcentagem|floatformat:0 }}%; max-width: 100%;">
                     </div>
                 </div>
             </div>
@@ -78,10 +80,10 @@
                                     {% endfor %}
                                     <tr class="table-active fw-bold">
                                         <td><b>Total:</b></td>
-                                        <td>{{ total_carboidratos }}g</td>
-                                        <td>{{ total_proteinas }}</td>
-                                        <td>{{ total_gorduras }}g</td>
-                                        <td>{{ total_calorias }}kcal</td>
+                                        <td>{{ total_carboidratos|floatformat:1 }}g</td>
+                                        <td>{{ total_proteinas|floatformat:1 }}g</td>
+                                        <td>{{ total_gorduras|floatformat:1 }}g</td>
+                                        <td>{{ totalKcal|floatformat:0 }}kcal</td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -105,29 +107,25 @@
     </div>
 </body>
 <script>
-
     const data = {
-
         labels: [
-            'Carboidratos {{ porcCarb }}%',
-            'Proteínas {{ porcProt }}%',
-            'Gorduras {{ porcGord }}%'
+            'Carboidratos ({{ kcalCarb|floatformat:1 }} kcal)',
+            'Proteínas ({{ kcalProt|floatformat:1 }} kcal)',
+            'Gorduras ({{ kcalGord|floatformat:1 }} kcal)'
         ],
         datasets: [{
             data: [
-                {{ kcalCarb }},
-        {{ kcalProt }},
-        {{ kcalGord }}
+                {{ kcalCarb|stringformat:"f" }},
+                {{ kcalProt|stringformat:"f" }},
+                {{ kcalGord|stringformat:"f" }}
             ],
     backgroundColor: ['#007bff', '#dc3545', '#ffc107']
-        }]
-    };
+    }]
+};
 
     new Chart(document.getElementById('grafico'), {
         type: 'pie',
         data: data
     });
-
 </script>
 {% endblock %}
-

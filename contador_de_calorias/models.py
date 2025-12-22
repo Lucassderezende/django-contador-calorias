@@ -7,10 +7,13 @@ class Alimentos(models.Model):
     carboidratos = models.FloatField()
     proteinas = models.FloatField()
     gorduras = models.FloatField()
-    calorias = models.IntegerField()
 
     def __str__(self):
         return self.nome
+    
+    @property
+    def calorias(self):
+        return (self.carboidratos * 4 + self.proteinas * 4 + self.gorduras * 9)
 
 class AlimentoIngerido(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
