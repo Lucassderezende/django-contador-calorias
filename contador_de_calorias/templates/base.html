@@ -29,9 +29,10 @@
                             Menu
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="menuUsuario">
-                            <a class="dropdown-item" href="#">
-                                <i class="bi bi-person me-2"></i> Perfil
-                            </a>
+                            <button class="dropdown-item" type="button" data-bs-toggle="modal"
+                                data-bs-target="#modalMeta">
+                                <i class="bi bi-check2-circle me-2"></i> Definir meta
+                            </button>
                             <form method="POST" action="{% url 'desconectar_usuario' %}">
                                 {% csrf_token %}
                                 <button type="submit" class="dropdown-item text-danger">
@@ -45,8 +46,36 @@
             </nav>
         </div>
     </div>
-        <main class="container-fluid mt-4">
+    <div class="modal fade" id="modalMeta" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <form method="POST" action="{% url 'definir_meta' %}">
+                    {% csrf_token %}
+                    <div class="modal-header">
+                        <h5 class="modal-title">Definir meta de calorias</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <label class="form-label">Meta diária (kcal)</label>
+                        <input type="number" name="meta" class="form-control" required min="1">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                            Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-success">
+                            Confirmar
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <main class="container-fluid mt-4">
         {% block content %}{% endblock %}
     </main>
 </body>
+
 </html>

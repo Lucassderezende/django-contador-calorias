@@ -8,6 +8,9 @@ from django.contrib import messages
 from django.contrib.auth.password_validation import validate_password
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 
 @login_required(login_url="login")
 def index(request):
@@ -46,7 +49,7 @@ def index(request):
     porcProt = round((kcalProt / totalKcal) * 100, 2) if totalKcal else 0
     porcGord  = round((kcalGord / totalKcal) * 100, 2) if totalKcal else 0
 
-    meta = 2500
+    meta = request.user.perfil.meta_calorias
     porcentagem = min(round((totalKcal / meta) * 100, 2), 100) if meta else 0
 
     contexto = {
@@ -62,7 +65,8 @@ def index(request):
         "porcCarb": porcCarb,
         "porcProt": porcProt,
         "porcGord": porcGord,
-        "porcentagem": porcentagem
+        "porcentagem": porcentagem,
+        "meta": meta
     }
 
     return render(request, "contador_de_calorias/index.html", contexto)
@@ -151,3 +155,13 @@ def desconectar_usuario(request):
         logout(request)
         messages.success(request, "Usuário desconectado!")
         return redirect("login")
+    
+@login_required(login_url="login")
+def definir_meta(request):
+    if request.method == "POST":
+        meta = int(request.POST.get("meta"))
+        perfil = request.user.perfil
+        perfil.meta_calorias = meta
+        perfil.save()
+        messages.success(request, "Meta de calorias atualizada!")
+        return redirect("index")

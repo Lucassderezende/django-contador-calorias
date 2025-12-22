@@ -19,4 +19,12 @@ class AlimentoIngerido(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     alimento_ingerido = models.ForeignKey(Alimentos, on_delete=models.CASCADE)
 
+class Perfil(models.Model):
+    
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    meta_calorias = models.IntegerField(default=2500)
+    
+    def __str__(self):
+        return self.user.username
+    
 
