@@ -56,10 +56,15 @@ em relação a uma meta diária personalizada.
 -   Uso de mensagens do Django
 -   Templates reutilizáveis com herança
 
-![Tela de Login](screenshots/login.png)
+## 🖼️ Demonstração
 
-![Dashboard](screenshots/dashboard.png)
+### Tela de Login
+<img src="screenshots/login.png" width="500" alt="Tela de Login"/>
 
-![Tela de cadastro](screenshots/cadastro.png)
+### Dashboard Principal
+<img src="screenshots/dashboard.png" width="500" alt="Dashboard"/>
+
+### Tela de Cadastro
+<img src="screenshots/cadastro.png" width="500" alt="Tela de Cadastro"/>
 
 
