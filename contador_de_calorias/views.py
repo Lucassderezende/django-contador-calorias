@@ -39,15 +39,15 @@ def index(request):
         a.alimento_ingerido.gorduras for a in alimentos_registrados
     )
 
-    kcalCarb = round(total_carboidratos * 4, 1)
-    kcalProt = round(total_proteinas * 4, 1)
-    kcalGord = round(total_gorduras * 9, 1)
+    kcalCarb = total_carboidratos * 4
+    kcalProt = total_proteinas * 4
+    kcalGord = total_gorduras * 9
 
-    totalKcal = round(kcalCarb + kcalProt + kcalGord)
+    totalKcal = kcalCarb + kcalProt + kcalGord
 
-    porcCarb = round((kcalCarb / totalKcal) * 100, 2) if totalKcal else 0
-    porcProt = round((kcalProt / totalKcal) * 100, 2) if totalKcal else 0
-    porcGord  = round((kcalGord / totalKcal) * 100, 2) if totalKcal else 0
+    porcCarb = (kcalCarb / totalKcal) * 100 if totalKcal else 0
+    porcProt = (kcalProt / totalKcal) * 100 if totalKcal else 0
+    porcGord  = (kcalGord / totalKcal) * 100 if totalKcal else 0
 
     meta = request.user.perfil.meta_calorias
     porcentagem = min(round((totalKcal / meta) * 100, 2), 100) if meta else 0
@@ -58,9 +58,9 @@ def index(request):
         "total_carboidratos": round(total_carboidratos, 2),
         "total_proteinas": round(total_proteinas, 2),
         "total_gorduras": round(total_gorduras, 2),
-        "kcalCarb": kcalCarb,
-        "kcalProt": kcalProt,
-        "kcalGord": kcalGord,
+        "kcalCarb": float(kcalCarb),
+        "kcalProt": float(kcalProt),
+        "kcalGord": float(kcalGord),
         "totalKcal": totalKcal,
         "porcCarb": porcCarb,
         "porcProt": porcProt,
@@ -165,3 +165,11 @@ def definir_meta(request):
         perfil.save()
         messages.success(request, "Meta de calorias atualizada!")
         return redirect("index")
+
+@login_required(login_url="login")
+def deletar_todos_consumidos(request):
+    
+    if request.method == "POST":
+        AlimentoIngerido.objects.filter(user=request.user).delete()
+        messages.success(request, "Todos os itens foram removidos!")
+    return redirect("index")

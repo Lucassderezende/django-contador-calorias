@@ -9,5 +9,6 @@ urlpatterns = [
     path("login/", views.login, name="login"),
     path("cadastro/", views.cadastro, name="cadastro"),
     path("desconectar/", views.desconectar_usuario, name="desconectar_usuario"),
-    path("definir-meta/", views.definir_meta, name="definir_meta")
+    path("definir-meta/", views.definir_meta, name="definir_meta"),
+    path("deletar_itens/", views.deletar_todos_consumidos, name="deletar_consumidos"),
 ]
