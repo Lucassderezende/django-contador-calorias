@@ -61,7 +61,7 @@ def index(request):
         "kcalCarb": float(kcalCarb),
         "kcalProt": float(kcalProt),
         "kcalGord": float(kcalGord),
-        "totalKcal": totalKcal,
+        "totalKcal": int(totalKcal),
         "porcCarb": porcCarb,
         "porcProt": porcProt,
         "porcGord": porcGord,
